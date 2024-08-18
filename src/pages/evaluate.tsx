@@ -1,56 +1,40 @@
 import React from "react";
-import { Progress } from "@/components/ui/progress";
 import Layout from "@/components/ui/Layout";
 import "../app/globals.css";
+import RemarksAndEvaluateBtn from "@/app/components/RemarksAndEvaluateBtn";
+import Evaluation from "@/app/components/Evaluation";
+import useStore from "../../src/app/store/useStore";
+import PDFPreview from "@/app/components/PDFPreview";
+import useWindowSize from "../../src/app/store/useWindowSize";
 export default function EvaluatePDF() {
-  const [progress, setProgress] = React.useState(65);
+  const view = useStore((state) => state.view);
 
   return (
     <Layout>
-      <div className="bg-white rounded-xl shadow-md p-4 w-full max-w-sm mx-auto">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Overall Score</p>
-            <p className="text-lg font-semibold text-black">
-              Remark: <span className="text-green-500">Good</span>
-            </p>
-            <p className="text-gray-400 text-xs">Evaluated on 12 Jul 2024</p>
-          </div>
-          <div className="relative">
-            <div className="text-2xl font-bold text-black absolute inset-0 flex items-center justify-center">
-              {progress}/20
+      <div className="p-3 lg:p-0 pt-4 flex flex-col lg:flex-row  gap-4 w-full md:pl-8 md:max-w-[77%] lg:max-w-[85%] md:mx-auto ">
+        <div className="hidden md:flex flex-col gap-4">
+          {view === "Check detailed Evaluation" && (
+            <div className="md:pt-[70px]">
+              <PDFPreview />
             </div>
-            <div className="relative w-40 h-40">
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle
-                  className="text-gray-200 stroke-current"
-                  stroke-width="10"
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="transparent"
-                ></circle>
-
-                <circle
-                  className="text-indigo-500  progress-ring__circle stroke-current"
-                  stroke-width="10"
-                  stroke-linecap="round"
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="transparent"
-                  stroke-dasharray="251.2"
-                  stroke-dashoffset="calc(251.2 - (251.2 * 75) / 100)"
-                ></circle>
-
-               
-              </svg>
-            </div>
-          </div>
+          )}
         </div>
-        <button className="mt-4 px-4 py-2 bg-[#6947BF] text-white rounded-lg text-center w-full text-sm font-semibold hover:bg-[#553699] transition-all">
-          Check detailed Evaluation →
-        </button>
+        <div className="lg:hidden block">
+          <RemarksAndEvaluateBtn />
+        </div>
+        <div className="md:hidden block">
+          {view === "Check detailed Evaluation" ? (
+            <PDFPreview />
+          ) : (
+            <Evaluation />
+          )}
+        </div>
+        <div className="lg:pt-[70px] flex flex-col gap-4 ">
+          <div className="hidden lg:block">
+            <RemarksAndEvaluateBtn />
+          </div>
+          <Evaluation />
+        </div>
       </div>
     </Layout>
   );

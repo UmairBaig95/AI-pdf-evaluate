@@ -12,27 +12,75 @@ import {
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import GenerateAISvg from "../SVG/GenerateAIIcon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CrossSvg from "../SVG/CrossIcon";
 import FileImage from "../../../public/615_frame.png";
 import TickMark from "../../../public/Vector.png";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function UploadSection() {
+  const router = useRouter();
   const [buttonDisable, setButtonDisabled] = useState(true);
-  const [uploadedFile, setUploadedFile] = useState<any>(null); // State for holding uploaded file
-  const [dragging, setDragging] = useState(false); // State to track drag-and-drop interaction
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
+  const [dragging, setDragging] = useState(false);
+  const [courseworkType, setCourseworkType] = useState("");
+  const [subject, setSubject] = useState("");
+  const [essayTitle, setEssayTitle] = useState("");
+
+  useEffect(() => {
+    const savedFile = localStorage.getItem("uploadedFile");
+    const savedCourseworkType = localStorage.getItem("courseworkType");
+    const savedSubject = localStorage.getItem("subject");
+    const savedEssayTitle = localStorage.getItem("essayTitle");
+
+    if (savedFile) {
+      setUploadedFile(JSON.parse(savedFile));
+      setButtonDisabled(false);
+    }
+    if (savedCourseworkType) setCourseworkType(savedCourseworkType);
+    if (savedSubject) setSubject(savedSubject);
+    if (savedEssayTitle) setEssayTitle(savedEssayTitle);
+  }, []);
+
+  const saveToLocalStorage = () => {
+    if (uploadedFile)
+      localStorage.setItem("uploadedFile", JSON.stringify(uploadedFile));
+    localStorage.setItem("courseworkType", courseworkType);
+    localStorage.setItem("subject", subject);
+    localStorage.setItem("essayTitle", essayTitle);
+  };
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
-    if (file) {
-      setUploadedFile(file);
-      setButtonDisabled(false); // Enable button when a file is uploaded
+    if (
+      file &&
+      file.size <= 25 * 1024 * 1024 &&
+      file.type === "application/pdf"
+    ) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const base64File = e.target.result;
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          data: base64File,
+        };
+        setUploadedFile(fileData);
+        setButtonDisabled(false);
+        localStorage.setItem("uploadedFile", JSON.stringify(fileData));
+        saveUploadHistory(fileData);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("File must be a PDF and less than 25MB.");
     }
   };
 
   const handleRemoveFile = () => {
     setUploadedFile(null);
-    setButtonDisabled(true); // Disable button when file is removed
+    setButtonDisabled(true);
+    localStorage.removeItem("uploadedFile");
   };
 
   const handleDragOver = (event: any) => {
@@ -49,10 +97,49 @@ export default function UploadSection() {
     setDragging(false);
 
     const file = event.dataTransfer.files[0];
-    if (file && file.type === "application/pdf") {
-      setUploadedFile(file);
-      setButtonDisabled(false);
+    if (
+      file &&
+      file.type === "application/pdf" &&
+      file.size <= 25 * 1024 * 1024
+    ) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const base64File = e.target.result;
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          data: base64File,
+        };
+        setUploadedFile(fileData);
+        setButtonDisabled(false);
+        localStorage.setItem("uploadedFile", JSON.stringify(fileData));
+        saveUploadHistory(fileData);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("File must be a PDF and less than 25MB.");
     }
+  };
+
+  const saveUploadHistory = (fileData: any) => {
+    const history = JSON.parse(localStorage.getItem("uploadHistory") || "[]");
+    const currentDateTime = new Date().toLocaleString();
+
+    const newHistoryEntry = {
+      name: fileData.name,
+      courseworkType,
+      subject,
+      essayTitle,
+      dateTime: currentDateTime,
+    };
+
+    history.push(newHistoryEntry);
+    localStorage.setItem("uploadHistory", JSON.stringify(history));
+  };
+
+  const handleFormSubmit = () => {
+    saveToLocalStorage();
+    router.push("evaluate");
   };
 
   return (
@@ -71,7 +158,7 @@ export default function UploadSection() {
               <div className="flex items-center relative justify-between bg-white p-2 rounded-xl w-[15rem] h-[76px] border">
                 <div className="flex items-center gap-3">
                   <Image
-                    src={FileImage} // Replace with your file icon
+                    src={FileImage}
                     alt="File icon"
                     width={60}
                     height={60}
@@ -133,29 +220,35 @@ export default function UploadSection() {
             Select your course & subjects*
           </div>
           <div className="flex flex-col md:flex-row gap-2">
-            <Select>
+            <Select
+              value={courseworkType}
+              onValueChange={(value) => setCourseworkType(value)}
+            >
               <SelectTrigger className="w-[187px] rounded-full">
                 <SelectValue placeholder="Coursework Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Option</SelectItem>
-                  <SelectItem value="banana">Option</SelectItem>
-                  <SelectItem value="blueberry">Option</SelectItem>
+                  <SelectLabel>Options</SelectLabel>
+                  <SelectItem value="option1">Option 1</SelectItem>
+                  <SelectItem value="option2">Option 2</SelectItem>
+                  <SelectItem value="option3">Option 3</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <Select>
-              <SelectTrigger className="w-[115px] rounded-full">
+            <Select
+              value={subject}
+              onValueChange={(value) => setSubject(value)}
+            >
+              <SelectTrigger className="w-[187px] rounded-full">
                 <SelectValue placeholder="Subject" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Math</SelectItem>
-                  <SelectItem value="banana">English</SelectItem>
-                  <SelectItem value="blueberry">Social</SelectItem>
+                  <SelectLabel>Options</SelectLabel>
+                  <SelectItem value="subject1">Subject 1</SelectItem>
+                  <SelectItem value="subject2">Subject 2</SelectItem>
+                  <SelectItem value="subject3">Subject 3</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -167,8 +260,11 @@ export default function UploadSection() {
             className="w-full hover:outline-none focus:outline-none active:outline-none focus:border-[#FF4800] hover:border-[#FF4800] active:border-[#FF4800] p-3 md:max-w-[322px] border rounded-full bg-white focus-visible:shadow-none focus-visible:outline-none focus-visible:ring-0 "
             type="text"
             placeholder="how nation work"
+            value={essayTitle}
+            onChange={(e) => setEssayTitle(e.target.value)}
           />
         </div>
+
         <Button
           className={`rounded-full  group  mt-6 ${
             buttonDisable
@@ -176,6 +272,7 @@ export default function UploadSection() {
               : "bg-[#6947BF] hover:bg-[#6947BF]"
           }   gap-2 text-white py-3 flex`}
           disabled={buttonDisable}
+          onClick={handleFormSubmit}
         >
           <div
             className={`w-5 h-5 rounded-full  flex ${

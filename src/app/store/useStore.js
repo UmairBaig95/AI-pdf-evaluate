@@ -1,8 +1,14 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
+  view: "Check detailed Evaluation", // initial state
+  onClick: () =>
+    set((state) => ({
+      view:
+        state.view === "Check detailed Evaluation"
+          ? "Expand and view your file"
+          : "Check detailed Evaluation",
+    })),
 }));
 
 export default useStore;
