@@ -229,10 +229,10 @@ export default function UploadSection() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Options</SelectLabel>
-                  <SelectItem value="option1">Option 1</SelectItem>
-                  <SelectItem value="option2">Option 2</SelectItem>
-                  <SelectItem value="option3">Option 3</SelectItem>
+                  <SelectLabel>1 Month</SelectLabel>
+                  <SelectItem value="option1">3 Month</SelectItem>
+                  <SelectItem value="option2">6 Month</SelectItem>
+                  <SelectItem value="option3">I year</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -245,10 +245,10 @@ export default function UploadSection() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Options</SelectLabel>
-                  <SelectItem value="subject1">Subject 1</SelectItem>
-                  <SelectItem value="subject2">Subject 2</SelectItem>
-                  <SelectItem value="subject3">Subject 3</SelectItem>
+                  <SelectLabel>English</SelectLabel>
+                  <SelectItem value="subject1">Computer</SelectItem>
+                  <SelectItem value="subject2">Physics</SelectItem>
+                  <SelectItem value="subject3">Chemistry</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

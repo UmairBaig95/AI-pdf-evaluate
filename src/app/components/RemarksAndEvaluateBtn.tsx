@@ -7,8 +7,8 @@ export default function RemarksAndEvaluateBtn() {
   const view = useStore((state) => state.view);
   const setView = useStore((state) => state.onClick);
   return (
-    <div className="flex flex-col md:flex-col-reverse gap-4 mt-4 lg:mt-1">
-      <div className="bg-white rounded-[30px] pl-4 w-full lg:w-[92%]">
+    <div className="flex flex-col md:flex-col-reverse gap-4 mt-4 lg:mt-1 2xl:w-[28rem] 3xl:w-[35rem]">
+      <div className="bg-white rounded-[30px] pl-4 w-full">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
             <p className="text-[#3D404B] text-sm">Overall Score</p>

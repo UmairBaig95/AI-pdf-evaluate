@@ -10,8 +10,8 @@ import {
 import Image from "next/image";
 export default function Evaluation() {
   return (
-    <div className="flex flex-col gap-3 lg:w-[25rem] xl:w-[35rem]">
-      <div className=" bg-white rounded-[1.5rem] lg:w-[23rem] xl:w-[32rem]">
+    <div className="flex flex-col gap-3 lg:w-[24rem] xl:w-[26rem]">
+      <div className=" bg-white rounded-[1.5rem] lg:w-[24rem] 2xl:w-[28rem] xl:w-[26rem] 3xl:w-[35rem]">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1" className="border-b-0">
             <AccordionTrigger className="hover:no-underline pr-4 py-1">
@@ -136,7 +136,7 @@ export default function Evaluation() {
           </AccordionItem>
         </Accordion>
       </div>
-      <div className=" bg-white rounded-[1.5rem] lg:w-[23rem] xl:w-[32rem]">
+      <div className=" bg-white rounded-[1.5rem] lg:w-[24rem] 2xl:w-[28rem] xl:w-[26rem] 3xl:w-[35rem]">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1" className="border-b-0">
             <AccordionTrigger className="hover:no-underline pr-4 py-1">
@@ -261,7 +261,7 @@ export default function Evaluation() {
           </AccordionItem>
         </Accordion>
       </div>
-      <div className=" bg-white rounded-[1.5rem] lg:w-[23rem] xl:w-[32rem]">
+      <div className=" bg-white rounded-[1.5rem] lg:w-[24rem] 2xl:w-[28rem] xl:w-[26rem] 3xl:w-[35rem]">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1" className="border-b-0">
             <AccordionTrigger className="hover:no-underline pr-4 py-1">

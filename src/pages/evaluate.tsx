@@ -29,7 +29,7 @@ export default function EvaluatePDF() {
             <Evaluation />
           )}
         </div>
-        <div className="lg:pt-[70px] flex flex-col gap-4 ">
+        <div className="lg:pt-[70px] hidden  md:flex flex-col gap-4 ">
           <div className="hidden lg:block">
             <RemarksAndEvaluateBtn />
           </div>

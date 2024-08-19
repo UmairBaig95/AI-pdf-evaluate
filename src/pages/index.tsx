@@ -5,7 +5,12 @@ import "../app/globals.css";
 import Bot from "../../public/Frame 1321318565.png";
 import Image from "next/image";
 import Layout from "@/components/ui/Layout";
+import { useEffect } from "react";
+import { worker } from "../../src/app/mocks/browser";
 export default function Uploadpdf() {
+  useEffect(() => {
+    worker.start();
+  }, []);
   return (
     <>
       <Layout>
